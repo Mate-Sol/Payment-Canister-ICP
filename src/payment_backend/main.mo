@@ -16,24 +16,24 @@ import Buffer "mo:base/Buffer";
 actor Payment {
   type Payment = {
     Type : Text;
-    InvoiceId : Text;
-    MongoId : Text;
-    PaymentID : Text;
-    VendorId : Text;
-    VendorEmail : Text;
-    VendorMobileNumberHash : Text;
-    VendorEmailHash : Text;
-    VendorMobileNumber : Text;
-    CurrencyCode : Text;
-    PaidAmount : Text;
-    ClientLastName : Text;
-    PaymentType : Text;
-    ReceiptUrl : Text;
-    Date : Int;
-    TimeStamp : Int;
-    PaymentGateway : Text;
-    NetAmtFC : Text;
-    TxnHash : Text;
+    invoiceId : Text;
+    mongoId : Text;
+    paymentId : Text;
+    // vendorId : Text;
+    vendorEmail : Text;
+    vendorMobileNumberHash : Text;
+    vendorEmailHash : Text;
+    vendorMobileNumber : Text;
+    currencyCode : Text;
+    paidAmount : Text;
+    // ClientLastName : Text;
+    paymentType : Text;
+    receiptUrl : Text;
+    date : Text;
+    timeStamp : Int;
+    paymentGateway : Text;
+    netAmtFC : Text;
+    txnHash : Text;
   };
   type QueryResult = {
     Key : Text;
@@ -48,37 +48,36 @@ actor Payment {
   private stable var historyEntries : [(Text, [Payment])] = [];
   var history = Map.HashMap<Text, Buffer.Buffer<Payment>>(0, Text.equal, Text.hash);
 
-  public func CreatePayment(mongoid : Text, invoiceid : Text, clientLastname : Text, paymentID : Text, vendorId : Text, currencyCode : Text, paidAmount : Text, paymentType : Text, receiptUrl : Text, paymentGateway : Text, timeStamp : Text, netAmtFC : Text, vendorEmail : Text, vendorMobileNumber : Text, vendorEmailhash : Text, vendorMobilehash : Text, txnHash : Text) : async Text {
+  public func CreatePayment(mongoId : Text, invoiceId : Text, paymentId : Text,  currencyCode : Text, paidAmount : Text, paymentType : Text, receiptUrl : Text, paymentGateway : Text, date : Text, netAmtFC : Text, vendorEmail : Text, vendorMobileNumber : Text, vendorEmailHash : Text, vendorMobilehash : Text, txnHash : Text) : async Text {
 
-    switch (map.get(mongoid)) {
+    switch (map.get(mongoId)) {
       case (null) {
         let payment : Payment = {
-          Type = "Invoice";
-          InvoiceId = invoiceid;
-          MongoId = mongoid;
-          PaymentID = paymentID;
-          VendorId = vendorId;
-          VendorEmail = vendorEmail;
-          VendorMobileNumberHash = vendorMobileNumber;
-          VendorEmailHash = vendorEmailhash;
-          VendorMobileNumber = vendorMobileNumber;
-          CurrencyCode = currencyCode;
-          PaidAmount = paidAmount;
-          ClientLastName = clientLastname;
-          PaymentType = paymentType;
-          ReceiptUrl = receiptUrl;
-          Date = Time.now();
-          TimeStamp = Time.now();
-          PaymentGateway = paymentGateway;
-          NetAmtFC = netAmtFC;
-          TxnHash = txnHash;
+          Type = "InvoicePayment";
+          invoiceId = invoiceId;
+          mongoId = mongoId;
+          paymentId = paymentId;
+          // vendorId = vendorId;
+          vendorEmail = vendorEmail;
+          vendorMobileNumberHash = vendorMobileNumber;
+          vendorEmailHash = vendorEmailHash;
+          vendorMobileNumber = vendorMobileNumber;
+          currencyCode = currencyCode;
+          paidAmount = paidAmount;
+          paymentType = paymentType;
+          receiptUrl = receiptUrl;
+          date = date;
+          timeStamp = Time.now();
+          paymentGateway = paymentGateway;
+          netAmtFC = netAmtFC;
+          txnHash = txnHash;
 
         };
 
-        map.put(mongoid, payment);
+        map.put(mongoId, payment);
         var a = Buffer.Buffer<Payment>(0);
         a.add(payment);
-        history.put(mongoid, a);
+        history.put(mongoId, a);
         return "payment invoice created";
       };
       case (?value) {
@@ -111,12 +110,12 @@ actor Payment {
 
   };
 
-  public query func QueryInvoicesBasedVendorEmail(emailHash : Text) : async [Payment] {
+  public query func QueryInvoicesBasedvendorEmail(emailHash : Text) : async [Payment] {
     var b = Buffer.Buffer<Payment>(2);
 
     // var buffer: Buffer.T<Invoice> = Buffer.empty<Invoice>();
     for (invoice in map.entries()) {
-      if (invoice.1.VendorEmailHash == emailHash) {
+      if (invoice.1.vendorEmailHash == emailHash) {
         b.add(invoice.1);
       };
     };
@@ -124,11 +123,11 @@ actor Payment {
 
   };
 
-  public query func QueryInvoicesByVendorMobileNumber(vendorNumber : Text) : async [Payment] {
+  public query func QueryInvoicesByvendorMobileNumber(vendorNumber : Text) : async [Payment] {
     var b = Buffer.Buffer<Payment>(2);
 
     for (invoice in map.entries()) {
-      if (invoice.1.VendorMobileNumberHash == vendorNumber) {
+      if (invoice.1.vendorMobileNumberHash == vendorNumber) {
         b.add(invoice.1);
       };
     };
@@ -136,12 +135,12 @@ actor Payment {
     return Buffer.toArray<Payment>(b);
   };
 
-  public query func QueryInvoiceByPaymentId(paymentID : Text) : async [Payment] {
+  public query func QueryInvoiceBypaymentId(paymentId : Text) : async [Payment] {
     var b = Buffer.Buffer<Payment>(2);
 
     // var buffer: Buffer.T<Invoice> = Buffer.empty<Invoice>();
     for (invoice in map.entries()) {
-      if (invoice.1.PaymentID == paymentID) {
+      if (invoice.1.paymentId == paymentId) {
         b.add(invoice.1);
       };
     };
@@ -149,11 +148,11 @@ actor Payment {
 
   };
 
-  public query func QueryInvoiceByInvoiceId(invoiceid : Text) : async [Payment] {
+  public query func QueryInvoiceByinvoiceId(invoiceId : Text) : async [Payment] {
     var b = Buffer.Buffer<Payment>(2);
 
     for (invoice in map.entries()) {
-      if (invoice.1.InvoiceId == invoiceid) {
+      if (invoice.1.invoiceId == invoiceId) {
         b.add(invoice.1);
       };
     };
@@ -166,7 +165,7 @@ actor Payment {
 
     // var buffer: Buffer.T<Invoice> = Buffer.empty<Invoice>();
     for (invoice in map.entries()) {
-      if (invoice.1.TxnHash == txnHash) {
+      if (invoice.1.txnHash == txnHash) {
         b.add(invoice.1);
       };
     };
@@ -174,11 +173,11 @@ actor Payment {
 
   };
 
-  public query func QueryInvoiceByTimeStamp(timeStamp : Int) : async [Payment] {
+  public query func QueryInvoiceBytimeStamp(timeStamp : Int) : async [Payment] {
     var b = Buffer.Buffer<Payment>(2);
 
     for (invoice in map.entries()) {
-      if (invoice.1.TimeStamp == timeStamp) {
+      if (invoice.1.timeStamp == timeStamp) {
         b.add(invoice.1);
       };
     };
