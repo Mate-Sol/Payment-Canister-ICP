@@ -59,7 +59,7 @@ actor Payment {
           paymentId = paymentId;
           // vendorId = vendorId;
           vendorEmail = vendorEmail;
-          vendorMobileNumberHash = vendorMobileNumber;
+          vendorMobileNumberHash = vendorMobilehash;
           vendorEmailHash = vendorEmailHash;
           vendorMobileNumber = vendorMobileNumber;
           currencyCode = currencyCode;
@@ -174,7 +174,7 @@ actor Payment {
   };
 
   public query func QueryInvoiceBytimeStamp(timeStamp : Int) : async [Payment] {
-    var b = Buffer.Buffer<Payment>(2);
+    var b = Buffer.Buffer<Payment>(0);
 
     for (invoice in map.entries()) {
       if (invoice.1.timeStamp == timeStamp) {
@@ -185,7 +185,7 @@ actor Payment {
     return Buffer.toArray<Payment>(b);
   };
   public query func QueryInvoiceByType(invoiceType : Text) : async [Payment] {
-    var b = Buffer.Buffer<Payment>(2);
+    var b = Buffer.Buffer<Payment>(0);
 
     for (invoice in map.entries()) {
       if (invoice.1.Type == invoiceType) {
