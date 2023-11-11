@@ -16,24 +16,24 @@ import Buffer "mo:base/Buffer";
 actor Payment {
   type Payment = {
     Type : Text;
-    invoiceId : Text;
-    mongoId : Text;
-    paymentId : Text;
+    InvoiceId : Text;
+    MongoId : Text;
+    PaymentId : Text;
     // vendorId : Text;
-    vendorEmail : Text;
-    vendorMobileNumberHash : Text;
-    vendorEmailHash : Text;
-    vendorMobileNumber : Text;
-    currencyCode : Text;
-    paidAmount : Text;
+    VendorEmail : Text;
+    VendorMobileNumberHash : Text;
+    VendorEmailHash : Text;
+    VendorMobileNumber : Text;
+    CurrencyCode : Text;
+    PaidAmount : Text;
     // ClientLastName : Text;
-    paymentType : Text;
-    receiptUrl : Text;
-    date : Text;
-    timeStamp : Int;
-    paymentGateway : Text;
-    netAmtFC : Text;
-    txnHash : Text;
+    PaymentType : Text;
+    ReceiptUrl : Text;
+    Date : Text;
+    TimeStamp : Int;
+    PaymentGateway : Text;
+    NetAmtFC : Text;
+    TxnHash : Text;
   };
   type QueryResult = {
     Key : Text;
@@ -54,23 +54,23 @@ actor Payment {
       case (null) {
         let payment : Payment = {
           Type = "InvoicePayment";
-          invoiceId = invoiceId;
-          mongoId = mongoId;
-          paymentId = paymentId;
+          InvoiceId = invoiceId;
+          MongoId = mongoId;
+          PaymentId = paymentId;
           // vendorId = vendorId;
-          vendorEmail = vendorEmail;
-          vendorMobileNumberHash = vendorMobilehash;
-          vendorEmailHash = vendorEmailHash;
-          vendorMobileNumber = vendorMobileNumber;
-          currencyCode = currencyCode;
-          paidAmount = paidAmount;
-          paymentType = paymentType;
-          receiptUrl = receiptUrl;
-          date = date;
-          timeStamp = Time.now();
-          paymentGateway = paymentGateway;
-          netAmtFC = netAmtFC;
-          txnHash = txnHash;
+          VendorEmail = vendorEmail;
+          VendorMobileNumberHash = vendorMobilehash;
+          VendorEmailHash = vendorEmailHash;
+          VendorMobileNumber = vendorMobileNumber;
+          CurrencyCode = currencyCode;
+          PaidAmount = paidAmount;
+          PaymentType = paymentType;
+          ReceiptUrl = receiptUrl;
+          Date = date;
+          TimeStamp = Time.now();
+          PaymentGateway = paymentGateway;
+          NetAmtFC = netAmtFC;
+          TxnHash = txnHash;
 
         };
 
@@ -115,7 +115,7 @@ actor Payment {
 
     // var buffer: Buffer.T<Invoice> = Buffer.empty<Invoice>();
     for (invoice in map.entries()) {
-      if (invoice.1.vendorEmailHash == emailHash) {
+      if (invoice.1.VendorEmailHash == emailHash) {
         b.add(invoice.1);
       };
     };
@@ -127,7 +127,7 @@ actor Payment {
     var b = Buffer.Buffer<Payment>(2);
 
     for (invoice in map.entries()) {
-      if (invoice.1.vendorMobileNumberHash == vendorNumber) {
+      if (invoice.1.VendorMobileNumberHash == vendorNumber) {
         b.add(invoice.1);
       };
     };
@@ -140,7 +140,7 @@ actor Payment {
 
     // var buffer: Buffer.T<Invoice> = Buffer.empty<Invoice>();
     for (invoice in map.entries()) {
-      if (invoice.1.paymentId == paymentId) {
+      if (invoice.1.PaymentId == paymentId) {
         b.add(invoice.1);
       };
     };
@@ -152,7 +152,7 @@ actor Payment {
     var b = Buffer.Buffer<Payment>(2);
 
     for (invoice in map.entries()) {
-      if (invoice.1.invoiceId == invoiceId) {
+      if (invoice.1.InvoiceId == invoiceId) {
         b.add(invoice.1);
       };
     };
@@ -165,7 +165,7 @@ actor Payment {
 
     // var buffer: Buffer.T<Invoice> = Buffer.empty<Invoice>();
     for (invoice in map.entries()) {
-      if (invoice.1.txnHash == txnHash) {
+      if (invoice.1.TxnHash == txnHash) {
         b.add(invoice.1);
       };
     };
@@ -177,7 +177,7 @@ actor Payment {
     var b = Buffer.Buffer<Payment>(0);
 
     for (invoice in map.entries()) {
-      if (invoice.1.timeStamp == timeStamp) {
+      if (invoice.1.TimeStamp == timeStamp) {
         b.add(invoice.1);
       };
     };
