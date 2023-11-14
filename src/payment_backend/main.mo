@@ -48,7 +48,7 @@ actor Payment {
   private stable var historyEntries : [(Text, [Payment])] = [];
   var history = Map.HashMap<Text, Buffer.Buffer<Payment>>(0, Text.equal, Text.hash);
 
-  public func CreatePayment(mongoId : Text, invoiceId : Text, paymentId : Text, vendorId:Text, currencyCode : Text, paidAmount : Text, paymentType : Text, receiptUrl : Text, paymentGateway : Text, date : Text, netAmtFC : Text, vendorEmail : Text, vendorMobileNumber : Text, vendorEmailHash : Text, vendorMobilehash : Text, txnHash : Text) : async Text {
+  public func CreatePayment(mongoId : Text, invoiceId : Text, paymentId : Text, vendorId:Text, currencyCode : Text, paidAmount : Text, paymentType : Text, receiptUrl : Text, paymentGateway : Text, date : Text, netAmtFC : Text, vendorEmail : Text, vendorMobileNumber : Text, vendorEmailHash : Text, vendorMobilehash : Text, txnHash : Text,Times:Int) : async Text {
 
     switch (map.get(mongoId)) {
       case (null) {
@@ -67,7 +67,7 @@ actor Payment {
           PaymentType = paymentType;
           ReceiptUrl = receiptUrl;
           Date = date;
-          TimeStamp = Time.now();
+          TimeStamp = Times;
           PaymentGateway = paymentGateway;
           NetAmtFC = netAmtFC;
           TxnHash = txnHash;
